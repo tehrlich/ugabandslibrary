@@ -30,7 +30,8 @@
 
 <div class="form-group">
    {!! Form::label('grade', 'Grade:') !!}
-   {!! Form::selectRange('grade', 0, 6, ['class' => 'form-control']) !!}
+   {!! Form::select('grade', array('0', '1', '2', '3', '4', '5', '6'), null, ['class' => 'form-control']) !!}
+
 </div>
 
 <div class="form-group">
@@ -49,8 +50,13 @@
 </div>
 
 <div class="form-group">
+   {!! Form::label('checkedOut', 'Checked Out:') !!}
+   {!! Form::text('checkedOut', null, ['class' => 'form-control', 'placeholder' => 'To Whom and When']) !!}
+</div>
+
+<div class="form-group">
    {!! Form::label('notes', 'Notes:') !!}
-   {!! Form::textarea('notes', null, ['class' => 'form-control', 'placeholder' => 'Score is on loan, XYZ is missing. . .']) !!}
+   {!! Form::textarea('notes', null, ['class' => 'form-control', 'placeholder' => 'Clarinet 2 is missing. . .']) !!}
 </div>
 
 <div class="form-group">

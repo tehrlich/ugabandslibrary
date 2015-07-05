@@ -35,18 +35,25 @@
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li><a href="{{ url('/') }}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a></li>
-					<li><a href="{{ url('/works/create') }}">Add Work</a></li>
-					<li><a href="{{ url('/') }}">User Admin</a></li>
+					<li><a href="{{ url('/recent') }}">Recent Works</a></li>
+					<li><a href="{{ url('/ms') }}">Middle School</a></li>
+					<li><a href="{{ url('/scoreonly') }}">Score Only</a></li>
+					<li><a href="{{ url('/checkedout') }}">Checked Out</a></li>
+					<li><a href="{{ url('/deleted') }}">Deleted Works</a></li>
+					<li><a href="{{ url('/create') }}">Add Work</a></li>
+					<li><a href="{{ url('/users') }}">User Admin</a></li>
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
 					@if (Auth::guest())
 						<li><a href="{{ url('/auth/login') }}">Login</a></li>
-						<li><a href="{{ url('/auth/register') }}">Register</a></li>
 					@else
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
+								<li role="presentation" class="dropdown-header"><b>Access Level:</b> {{ Auth::user()->priv }}</li>
+								<li role="presentation" class="dropdown-header"><b>Email Address:</b> {{ Auth::user()->email }}</li>
+								<li role="presentation" class="divider"></li>
 								<li><a href="{{ url('/auth/logout') }}">Logout</a></li>
 							</ul>
 						</li>
@@ -56,14 +63,10 @@
 		</div>
 	</nav>
 
-	@if (Session::has('message'))
-    <div class="alert alert-info">{{ Session::get('message') }}</div>
-	@endif
-
 	@yield('content')
 
 	<!-- Scripts -->
-	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
+	<script src="{{ asset('/jquery.min.js') }}"></script>
+	<script src="{{ asset('/bootstrap.min.js') }}"></script>
 </body>
 </html>

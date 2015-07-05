@@ -27,7 +27,9 @@ class CreateWorksTable extends Migration {
 			$table->string('lastPerformedEnsemble')->nullable();
 			$table->date('lastPerformedDate')->nullable();
 			$table->string('notes')->nullable();
+			$table->string('checkedOut')->nullable();
 			$table->string('lastEditedBy');
+			$table->softDeletes();
 		});
 	}
 

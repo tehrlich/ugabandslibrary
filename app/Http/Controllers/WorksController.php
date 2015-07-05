@@ -9,13 +9,13 @@ use Redirect;
 use App\Http\Requests\WorkRequest;
 use Request;
 use Input;
-use DB;
 
 class WorksController extends Controller {
 
 	public function __construct()
 	{
 		$this->middleware('auth');
+		$this->middleware('editor', ['only' => ['deleted', 'restore', 'create', 'store', 'edit', 'update', 'destroy']]);
 	}
 
 	/**
@@ -25,20 +25,57 @@ class WorksController extends Controller {
 	 */
 	public function index()
 	{
-		if (Input::has('name')) {
-			$query = Input::get('name');
-			$queryRaw = "%".$query."%";
-			$identifier = DB::table('works')->where('identifier', 'LIKE', $queryRaw)->get();
-			$name = DB::table('works')->where('name', 'LIKE', $queryRaw)->get();
-			$composer = DB::table('works')->where('composer', 'LIKE', $queryRaw)->get();
-			$editor = DB::table('works')->where('editor', 'LIKE', $queryRaw)->get();
-			$arranger = DB::table('works')->where('arranger', 'LIKE', $queryRaw)->get();
-			$sum = array_merge($identifier, $name, $composer, $editor, $arranger);
-			return view('home')->with('works',$sum)->with('query', $query)->with('title', 'Showing Results for "'.$query.'"');
+		if (Input::has('query')) {
+			$query = Input::get('query');
+			$works = Work::Search($query)->simplePaginate(30);
+			return view('home')->with('works',$works)->with('query', $query)->with('title', 'Showing Results for "'.$query.'"');
 		}
 
-		$works = Work::ID()->simplePaginate(30);
-		return view('home')->with('works', $works);
+		return view('home')->with('works', Work::ID()->simplePaginate(30));
+	}
+
+	public function middleSchool()
+	{
+		return view('home')->with('works', Work::MiddleSchool()->simplePaginate(30));
+	}
+
+	public function scoreOnly()
+	{
+		return view('home')->with('works', Work::ScoreOnly()->simplePaginate(30));
+	}
+
+	public function recentWorks()
+	{
+		return view('home')->with('works', Work::RecentWorks()->simplePaginate(30));
+	}
+
+	public function checkedOut()
+	{
+		return view('home')->with('works', Work::CheckedOut()->simplePaginate(30));
+	}
+
+	/**
+	* Display the specified resource.
+	*
+	* @param  int  $id
+	* @return Response
+	*/
+	public function show($id)
+	{
+		$work = Work::findorFail($id);
+		return view('show')->with('work', $work);
+	}
+
+//Below methods require editor or admin
+
+	public function deleted()
+	{
+		return view('home')->with('works', Work::onlyTrashed()->simplePaginate(30))->with('restore', true);
+	}
+
+	public function restore($id){
+		$work = Work::withTrashed()->where('id', $id)->restore();
+		return Redirect::route('works.index')->with('message-success', 'Work Restored.');
 	}
 
 	/**
@@ -61,22 +98,9 @@ class WorksController extends Controller {
 		$input = Request::all();
 		$input['lastEditedBy'] = Auth::user()->name;
 		Work::create($input);
-		return Redirect::route('works.index');
+		return Redirect::route('works.index')->with('message-success', 'Work Created.');
 	}
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		$work = Work::findorFail($id);
-		return view('show')->with('work', $work);
-	}
-
-	/**
+	/**''
 	 * Show the form for editing the specified resource.
 	 *
 	 * @param  int  $id
@@ -85,7 +109,7 @@ class WorksController extends Controller {
 	public function edit($id)
 	{
 		$work = Work::findorFail($id);
-		return view('edit')->with('work', $work);
+		return view('edit')->with('work', $work)->with('message-success', 'Work Edited.');
 	}
 
 	/**
@@ -99,7 +123,7 @@ class WorksController extends Controller {
 		$work = Work::findorFail($id);
 		$request['lastEditedBy'] = Auth::user()->name;
 		$work->update($request->all());
-		return Redirect::route('works.index');
+		return Redirect::route('works.index')->with('message-success', 'Work Updated.');
 	}
 
 	/**
@@ -110,9 +134,8 @@ class WorksController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		$work = Work::findorFail($id);
-		$work->delete();
-		return Redirect::route('works.index');
+		Work::findorFail($id)->delete();
+		return Redirect::route('works.index')->with('message-success', 'Work Deleted.');
 	}
 
 }

@@ -6,7 +6,11 @@
             <th>Composer</th>
             <th>Arranger</th>
             <th>View</th>
-            <th>Edit</th>
+            @if(!isset($restore))
+                <th>Edit</th>
+            @else
+                <th>Restore</th>
+            @endif
         </tr>
     </thead>
     <tbody>
@@ -18,16 +22,20 @@
                 <td>{{ $value->arranger }}</td>
                 @include('_infoModal')
                 <td><a href="#" data-toggle="modal" data-target="#{{$value->id}}">View</a></td>
+                @if(!isset($restore))
                 <td><a href="{{ URL::to('works/' . $value->id . '/edit') }}">Edit</a></td>
+                @else
+                <td>{!! Form::model($value, ['method' => 'POST', 'action' => ['WorksController@restore', $value->id]]) !!}
+				   {!! Form::submit('Restore', ['class' => 'btn btn-link linklookalike']) !!}
+                 {!! Form::close() !!}</td>
+                @endif
             </tr>
         @endforeach
     </tbody>
 </table>
-@if (!isset($query))
     <nav>
       <ul class="pager">
         <li class="previous @if ($works->currentPage() === 1 ) disabled @endif"><a href="{{ $works->previousPageUrl() }}"><span aria-hidden="true">&larr;</span> Previous</a></li>
-        <li class="next"><a href="{{ $works->nextPageUrl() }}">Next <span aria-hidden="true">&rarr;</span></a></li>
+        <li class="next @if ($works->hasMorePages() === false ) disabled @endif"><a href="{{ $works->appends(Request::only('query'))->nextPageUrl() }}">Next <span aria-hidden="true">&rarr;</span></a></li>
       </ul>
     </nav>
-@endif

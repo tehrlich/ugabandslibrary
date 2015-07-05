@@ -7,20 +7,22 @@
       </div>
       <div class="modal-body">
 		<dl class="dl-horizontal">
-			<dt>Composer</dt>
+			<dt>Composer:</dt>
 			<dd> {{$value->composer}} </dd>
 			<dt>Editor:</dt>
 			<dd> {{$value->editor}} </dd>
-			<dt>Publisher: </dt>
+			<dt>Publisher:</dt>
 			<dd> {{$value->publisher}} </dd>
-			<dt> Grade: </dt>
+			<dt> Grade:</dt>
 			<dd> {{$value->grade}} </dd>
-			<dt>Oversized Score Location </dt>
+			<dt>Oversized Score ID:</dt>
 			<dd> {{$value->oversizedScoreID}} </dd>
-			<dt>Last Ensemble Perf.: </dt>
+			<dt>Last Performed By:</dt>
 			<dd> {{$value->lastPerformedEnsemble}} </dd>
-			<dt>Last Performed Date: </dt>
+			<dt>Last Performed Date:</dt>
 			<dd> {{$value->lastPerformedDate}} </dd>
+            <dt>Checked Out:</dt>
+            <dd> {{$value->checkedOut}} </dd>
 			<dt>Additional Notes:</dt>
 			<dd> {{$value->notes}} </dd>
 			<dt>Last Edited By:</dt>
