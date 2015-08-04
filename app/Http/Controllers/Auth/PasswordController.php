@@ -27,7 +27,7 @@ class PasswordController extends Controller {
 	 * @param  \Illuminate\Contracts\Auth\PasswordBroker  $passwords
 	 * @return void
 	 */
-	public function __construct(Guard $auth, PasswordBroker $passwords)
+	public function __construct() //TE removed Guard $auth, PasswordBroker $passwords
 	{
 		$this->auth = $auth;
 		$this->passwords = $passwords;

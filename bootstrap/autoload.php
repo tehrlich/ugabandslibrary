@@ -27,11 +27,13 @@ require __DIR__.'/../vendor/autoload.php';
 |
 */
 
-if (file_exists($compiledPath = __DIR__.'/../vendor/compiled.php'))
+//if (file_exists($compiledPath = __DIR__.'/../vendor/compiled.php')) TE changed
+if (file_exists($compiledPath = __DIR__.'/cache/compiled.php'))
 {
 	require $compiledPath;
 }
-elseif (file_exists($compiledPath = __DIR__.'/../storage/framework/compiled.php'))
+//elseif (file_exists($compiledPath = __DIR__.'/../storage/framework/compiled.php')) TE changed
+elseif (file_exists($compiledPath = __DIR__.'/cache/compiled.php'))
 {
 	require $compiledPath;
 }
