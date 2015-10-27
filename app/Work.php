@@ -26,6 +26,16 @@ class Work extends Model {
 			return $query->orderBy('identifier','ASC')->where('identifier', 'LIKE', 'ms%');
 	}
 
+	public function scopeJazz($query)
+	{
+			return $query->orderBy('identifier','ASC')->where('identifier', 'LIKE', 'j%');
+	}
+
+	public function scopeMarchingBand($query)
+	{
+			return $query->orderBy('identifier','ASC')->where('identifier', 'LIKE', 'mb%')->Orwhere('identifier', 'LIKE', 'a%');
+	}
+
 	public function scopeScoreOnly($query)
 	{
 			return $query->orderBy('identifier','ASC')->where('identifier', 'LIKE', 'S%');

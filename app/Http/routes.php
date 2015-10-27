@@ -23,11 +23,18 @@ Route::get('/recent', 'WorksController@recentWorks');
 Route::get('/scoreonly', 'WorksController@scoreOnly');
 Route::get('/checkedout', 'WorksController@checkedOut');
 Route::get('/deleted', 'WorksController@deleted');
+Route::get('/mb', 'WorksController@marchingBand');
 Route::get('/create', 'WorksController@create');
 Route::resource('/works', 'WorksController');
 Route::resource('/users', 'UsersController');
 
-Route::controllers([
-	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
-]);
+
+// Authentication routes...
+Route::get('auth/login', 'Auth\AuthController@getLogin');
+Route::post('auth/login', 'Auth\AuthController@postLogin');
+Route::get('auth/logout', 'Auth\AuthController@getLogout');
+
+// Route::controllers([
+// 	'auth' => 'Auth\AuthController',
+// 	'password' => 'Auth\PasswordController',
+// ]);

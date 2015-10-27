@@ -9,6 +9,8 @@ use Redirect;
 use App\Http\Requests\WorkRequest;
 use Request;
 use Input;
+use URL;
+use Session;
 
 class WorksController extends Controller {
 
@@ -37,6 +39,16 @@ class WorksController extends Controller {
 	public function middleSchool()
 	{
 		return view('home')->with('works', Work::MiddleSchool()->simplePaginate(30));
+	}
+
+	public function jazz()
+	{
+		return view('home')->with('works', Work::Jazz()->simplePaginate(30));
+	}
+
+	public function marchingBand()
+	{
+		return view('home')->with('works', Work::marchingBand()->simplePaginate(30));
 	}
 
 	public function scoreOnly()
@@ -109,6 +121,7 @@ class WorksController extends Controller {
 	public function edit($id)
 	{
 		$work = Work::findorFail($id);
+		Session::flash('url',Request::server('HTTP_REFERER'));
 		return view('edit')->with('work', $work)->with('message-success', 'Work Edited.');
 	}
 
@@ -123,7 +136,8 @@ class WorksController extends Controller {
 		$work = Work::findorFail($id);
 		$request['lastEditedBy'] = Auth::user()->name;
 		$work->update($request->all());
-		return Redirect::route('works.index')->with('message-success', 'Work Updated.');
+		//return Redirect::route('works.index')->with('message-success', 'Work Updated.'); //Old Failsafe
+		return Redirect::to(Session::get('url'))->with('message-success', 'Work Updated.');
 	}
 
 	/**
